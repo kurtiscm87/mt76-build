@@ -15,11 +15,16 @@ sudo apt-get install -y build-essential libncurses5-dev gawk git \
  
 # optional packages
 sudo apt-get install swig
+
 #3. compile openwrt image MT7986 OpenWRT Trunk Image
 
+
 git clone https://git.openwrt.org/openwrt/openwrt.git
+
 cd openwrt
+
 ./scripts/feeds update -a
 ./scripts/feeds install -a
+
 make menuconfig
 make
