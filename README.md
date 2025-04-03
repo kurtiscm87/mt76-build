@@ -12,6 +12,9 @@ sudo apt-get install -y build-essential libncurses5-dev gawk git \
     libelf-dev ecj fastjar java-propose-classpath wget \
     python3 python3-distutils python3-setuptools python3-dev \
     python3-pip rsync
+
+
+sudo apt-get install -y build-essential libncurses5-dev gawk git subversion libssl-dev gettext unzip zlib1g-dev file libelf-dev ecj fastjar java-propose-classpath wget python3 python3-distutils python3-setuptools python3-dev python3-pip rsync
  
 # optional packages
 sudo apt-get install swig
