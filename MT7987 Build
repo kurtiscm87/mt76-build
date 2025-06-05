@@ -1,34 +1,73 @@
 
+Get OpenWrt 21.02 source code from Git server 
 
-Build SDK, Wi-Fi Package and generate OpenWrt image
-This chapter explains how to download the OpenWrt package, build an SDK with the necessary Wi-Fi packages for
-MediaTek MT7987 and MT7990, and generate the OpenWrt image.
-1. Get OpenWrt 21.02 source code from Git server
-  CMD:~/$> git clone --branch openwrt-21.02 https://git.openwrt.org/openwrt/openwrt.git
-2. Untar Wi-Fi package “mtk-wifi-mt7987-mt7993-xxx.tar.xz”
-  CMD:~/$> tar -Jxvf mtk-wifi-mt7987-mt7993-IMP_SDK-20250218.tar.xz
-3. Import WiFi packages into OpenWrt SDK source
-  CMD:~/$> cp -rf mtk-wifi-mt7987-mt7993/* openwrt/
-4. Change to openwrt folder
-  CMD:~/$> cd openwrt/
-5. Copy feeds.conf.default (openwrt-21.02) to feeds.conf
-  CMD:~/openwrt$> sed -i 's/feeds.conf.default$/feeds.conf/' ./autobuild/lede-build-sanity.sh
-  CMD:~/openwrt$> cp feeds.conf.default feeds.conf
-6. Prepare "feeds.conf" to specify the package repositories from which OpenWRT or MediaTek packages for additional
-software can be obtained. Here are two options for feeds configuration. The first option is to use up-to-date packages,
-while the second one is to use fixed revisions.
-  ◼ To use up-to-date packages, please append MTK feed to the feeds file of OpenWrt.
-  CMD:~/openwrt$> echo "src-git mtk_openwrt_feed
-  https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds" >> feeds.conf
-  ◼ To use fixed revisions, please create a file (openwrt/autobuild/feeds.conf.default-21.02) and then follow
-  instructions addressed in Appendix B.
-7. Run auto build script (including config and make) depending on the SKU you’re using.
-  ◼ BE3600
-  CMD:~/openwrt#> ./autobuild/mt7987-mt7993-BE3600/lede-branch-build-sanity.sh
-  one_PCIE=1
-8. If you want to compile (or re-compile), please use make instead of running the script again.
-  CMD:~/openwrt#> make V=s
-  Note: You just need to run “lede-branch-build-sanity.sh” once. If you want to re-compile the target, please use “make”
-  instead of running the script again.
-9. After compile PASS, you can get images at openwrt/bin/targets/mediatek/mt7987/ folder below
-  CMD:~/openwrt/bin/targets/mediatek/mt7987#> tree -L 1
+CMD:~/$> git clone --branch openwrt-21.02 https://git.openwrt.org/openwrt/openwrt.git 
+
+ 
+
+Untar Wi-Fi package “mtk-wifi-mt7987-mt7993-xxx.tar.xz” (Please use release version è like alpha3 : mtk-wifi-mt7987-mt7993-AlphaSDK_3-20241004.tar) 
+
+CMD:~/$> tar -Jxvf mtk-wifi-mt7987-mt7993-xxx.tar.xz 
+
+ 
+
+Import WiFi packages into OpenWrt SDK source 
+
+CMD:~/$> cp -rf mtk-wifi-mt7987-mt7993/* openwrt/ 
+
+ 
+
+Change to openwrt folder 
+
+CMD:~/$> cd openwrt/ 
+
+ 
+
+Copy the latest version of feeds.conf.default, which is based on openwrt-21.02, to feeds.conf 
+
+CMD:~/openwrt$> sed -i 's/feeds.conf.default$/feeds.conf/' ./autobuild/lede-build-sanity.sh 
+
+CMD:~/openwrt$> cp feeds.conf.default feeds.conf 
+
+ 
+
+Prepare "feeds.conf" to specify the package repositories from which OpenWRT or MediaTek packages for additional software can be obtained. Here are two options for feeds configuration. The first option is to use up-to-date packages, while the second one is to use fixed revisions. 
+
+CMD:~/openwrt$> vi autobuild/feeds.conf.default-21.02 
+
+ 
+
+Insert below message and save file 
+
+src-git packages https://git.openwrt.org/feed/packages.git^1be343f77 
+src-git luci https://git.openwrt.org/project/luci.git^e4c46338b1 
+src-git routing https://git.openwrt.org/feed/routing.git^a9e4310 
+src-git mtk_openwrt_feed https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds^bc01876 
+
+ 
+
+Run the following to prevent ca certificate issue when using dockerq  
+
+CMD:~/openwrt#> git config --global http.sslverify false  
+
+ 
+
+Run auto build script (including config and make) depending on the SKU you’re using. 
+
+BE3600 
+
+CMD:~/openwrt#> ./autobuild/mt7987-mt7993-BE3600/lede-branch-build-sanity.sh one_PCIE=1 
+
+ 
+
+If you want to compile (or re-compile), please use make instead of running the script again. 
+
+CMD:~/openwrt#> make V=s 
+
+Note: You just need to run “lede-branch-build-sanity.sh” once. If you want to re-compile the target, please use “make” instead of running the script again. 
+
+ 
+
+After compile PASS, you can get images at openwrt/bin/targets/mediatek/mt7988/ folder below 
+
+CMD:~/openwrt/bin/targets/mediatek/mt7987#> tree -L 1 
