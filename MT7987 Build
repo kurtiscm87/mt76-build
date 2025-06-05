@@ -71,3 +71,33 @@ Note: You just need to run “lede-branch-build-sanity.sh” once. If you want t
 After compile PASS, you can get images at openwrt/bin/targets/mediatek/mt7988/ folder below 
 
 CMD:~/openwrt/bin/targets/mediatek/mt7987#> tree -L 1 
+
+
+
+
+
+///////////////////////////////////////////////////////////////
+
+
+
+git clone --branch openwrt-21.02 https://git.openwrt.org/openwrt/openwrt.git
+cd openwrt; git checkout 4a1d8ef55cbf247f06dae8e958eb8eb42f1882a5; cd -;
+
+git clone --branch master https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds
+cd mtk-openwrt-feeds; git checkout be639389a047a00cca671bf1a06b5848d054adbd; cd -;
+
+cp -rf mtk-openwrt-feeds/autobuild/autobuild_5.4_mac80211_release openwrt
+cd openwrt; mv autobuild_5.4_mac80211_release autobuild
+
+echo "src-git mtk_openwrt_feed https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds" >> feeds.conf.default
+
+vim autobuild/feeds.conf.default-21.02
+
+src-git packages https://git.openwrt.org/feed/packages.git^1be343f
+src-git luci https://git.openwrt.org/project/luci.git^e4c4633
+src-git routing https://git.openwrt.org/feed/routing.git^a9e4310
+src-git mtk_openwrt_feed https://git01.mediatek.com/openwrt/feeds/mtk-openwrt-feeds^be63938
+
+
+
+dockerq "./autobuild/mt7987-npu/lede-branch-build-sanity.sh"
